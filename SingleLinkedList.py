@@ -47,6 +47,29 @@ class SingleLinkedList(object):
         node._next = None
         del node
 
+    def __len__(self):
+        def _iterative_len(node):
+            if node is None: return 0
+
+            n = node
+            l = 0
+            while n is not None:
+                n = n._next
+                l += 1
+
+            return l
+
+        def _recursive_len(node):
+            if node is None: return 0
+
+            return 1 + _recursive_len(node._next)
+
+        l1 = _iterative_len(self._head._next)
+        l2 = _recursive_len(self._head._next)
+        assert(l2 == l1)
+
+        return l1
+
 if __name__ == "__main__":
     print("Testing SingleLinkedList")
 
@@ -78,3 +101,5 @@ if __name__ == "__main__":
     l.delete(n2)
     l.delete(n0)
     l.delete(n3)
+
+    print(len(l))
