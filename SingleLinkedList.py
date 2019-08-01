@@ -69,6 +69,33 @@ class SingleLinkedList(object):
         assert(l2 == l1)
 
         return l1
+    
+    def indexOf(self, index):
+        def _iterative_indexOf(node, index):
+            if index < 0: return None
+            
+            n = node
+            i = 0
+            while n is not None and i < index:
+                n = n._next
+                i += 1
+            
+            if n is None and i < index: return None
+
+            return n
+        
+        def _recursive_indexOf(node, index):
+            if node is None: return None
+            if index == 0: return node
+
+            return _recursive_indexOf(node._next, index - 1)
+             
+        
+        ni = _iterative_indexOf(self._head._next, index)
+        nr = _recursive_indexOf(self._head._next, index)
+        assert(ni == nr)
+
+        return nr
 
 if __name__ == "__main__":
     print("Testing SingleLinkedList")
