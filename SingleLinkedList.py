@@ -12,12 +12,26 @@ class SingleLinkedList(object):
         self._head._next = node
     
     def search(self, val):
-        n = self._head._next
-        while n is not None:
-            if n._val == val: return n
-            n = n._next
+        def _iterative_search(node, val):
+            if node is None: return None
+            n = node
+            while n is not None:
+                if n._val == val: return n
+                n = n._next
+            
+            return None
         
-        return None
+        def _recursive_search(node, val):
+            if node is None: return None
+            
+            if node._val == val: return node
+            return _recursive_search(node._next, val)
+        
+        ni = _iterative_search(self._head._next, val)
+        nr = _recursive_search(self._head._next, val)
+
+        assert(ni == nr)
+        return ni
 
     def delete(self, node):
         if node is None: return
@@ -57,7 +71,6 @@ if __name__ == "__main__":
     
     n0 = l.search(0)
     assert(n is not None)
-    
     
     n3 = l.search(3)
     assert(n is not None)
