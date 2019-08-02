@@ -160,6 +160,23 @@ class SingleLinkedList(object):
 
         return None
 
+    def isPalindrome(self):
+        from collections import deque
+        stack = deque()
+
+        n = self._head._next
+        while n is not None:
+            stack.append(n)
+            n = n._next
+
+        n = self._head._next
+        while n is not None:
+            p = stack.pop()
+            if p._val != n._val: return False
+            n = n._next
+
+        return True
+
 if __name__ == "__main__":
     print("Testing SingleLinkedList")
 
@@ -193,14 +210,15 @@ if __name__ == "__main__":
     n3 = l.search(3)
     assert(n is not None)
     
-    l.delete(n2)
-    l.delete(n0)
-    l.delete(n3)
+    # l.delete(n2)
+    # l.delete(n0)
+    # l.delete(n3)
 
     print(len(l))
 
     print("#" * 10 + " Middle of List " + "#" * 10)
     m = l.middle()
+    print(m._val)
     assert m._val == 2
 
     print("#" * 10 + " Loop detects " + "#" * 10)
@@ -208,9 +226,9 @@ if __name__ == "__main__":
     l1 = l.loopLength()
 
     n4._next = n2
-    n = None
-    n4 = None
-    n2 = None
+    # n = None
+    # n4 = None
+    # n2 = None
 
     looped2 = l.hasLoop()
     l2 = l.loopLength()
@@ -219,3 +237,39 @@ if __name__ == "__main__":
     assert(l1 is None)
     assert(looped2 == True)
     assert(l2 == 3)
+
+    print("#" * 10 + " Palindrome detector " + "#" * 10)
+    pl = SingleLinkedList()
+
+    n = SingleLinkedList.Node(4)
+    pl.insert(n)
+
+    n = SingleLinkedList.Node(3)
+    pl.insert(n)
+
+    n = SingleLinkedList.Node(2)
+    pl.insert(n)
+
+    n = SingleLinkedList.Node(1)
+    pl.insert(n)
+
+    n = SingleLinkedList.Node(2)
+    pl.insert(n)
+
+    n = SingleLinkedList.Node(3)
+    pl.insert(n)
+
+    n = SingleLinkedList.Node(4)
+    pl.insert(n)
+
+    palindrome1 = pl.isPalindrome()
+    n4._next = None
+    n4 = None
+    n2 = None
+    palindrome2 = l.isPalindrome()
+
+    print("palindrome1: %r,  palindrome2: %r" % (palindrome1, palindrome2))
+    assert(palindrome1)
+    assert(palindrome2 is False)
+
+    print("End")
