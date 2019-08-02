@@ -137,6 +137,29 @@ class SingleLinkedList(object):
         assert(loop1 == loop2)
         return loop2
 
+    def loopLength(self):
+        def _iterative_loop_detector(node):
+            p = node
+            q = node
+
+            while q is not None and q._next is not None:
+                q = q._next._next
+                p = p._next
+
+                if p == q: return p
+
+            return None
+
+        p = _iterative_loop_detector(self._head._next)
+        q = p
+        len = 0
+        while p is not None:
+            p = p._next
+            len += 1
+            if p == q: return len
+
+        return None
+
 if __name__ == "__main__":
     print("Testing SingleLinkedList")
 
@@ -182,6 +205,7 @@ if __name__ == "__main__":
 
     print("#" * 10 + " Loop detects " + "#" * 10)
     looped1 = l.hasLoop()
+    l1 = l.loopLength()
 
     n4._next = n2
     n = None
@@ -189,5 +213,9 @@ if __name__ == "__main__":
     n2 = None
 
     looped2 = l.hasLoop()
+    l2 = l.loopLength()
+
     assert(looped1 == False)
+    assert(l1 is None)
     assert(looped2 == True)
+    assert(l2 == 3)
