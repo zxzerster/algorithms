@@ -97,6 +97,17 @@ class SingleLinkedList(object):
 
         return nr
 
+    def middle(self):
+        p = self._head._next
+        q = p
+
+        while q is not None and q._next is not None:
+            q = q._next._next
+            p = p._next
+
+        return p
+
+
 if __name__ == "__main__":
     print("Testing SingleLinkedList")
 
@@ -130,3 +141,7 @@ if __name__ == "__main__":
     l.delete(n3)
 
     print(len(l))
+
+    print("#" * 10 + " Middle of List " + "#" * 10)
+    m = l.middle()
+    assert m._val == 2
