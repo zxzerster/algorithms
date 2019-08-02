@@ -107,6 +107,35 @@ class SingleLinkedList(object):
 
         return p
 
+    def hasLoop(self):
+        def _hashable_loop_detector(node):
+            nodes = set()
+
+            while node is not None:
+                if node in nodes: return True
+
+                nodes.add(node)
+                node = node._next
+
+            return False
+
+        def _iterative_loop_detector(node):
+            p = node
+            q = node
+
+            while q is not None and q._next is not None:
+                q = q._next._next
+                p = p._next
+
+                if p == q: return True
+
+            return False
+
+        loop1 = _hashable_loop_detector(self._head._next)
+        loop2 = _iterative_loop_detector(self._head._next)
+
+        assert(loop1 == loop2)
+        return loop2
 
 if __name__ == "__main__":
     print("Testing SingleLinkedList")
@@ -114,12 +143,17 @@ if __name__ == "__main__":
     print("#" * 10 + " Insert / Search / Delete " + "#" * 10)
 
     l = SingleLinkedList()
+
+    n = SingleLinkedList.Node(4)
+    l.insert(n)
+    n4 = n
     
     n = SingleLinkedList.Node(3)
     l.insert(n)
     
     n = SingleLinkedList.Node(2)
     l.insert(n)
+    n2 = n
     
     n = SingleLinkedList.Node(1)
     l.insert(n)
@@ -145,3 +179,15 @@ if __name__ == "__main__":
     print("#" * 10 + " Middle of List " + "#" * 10)
     m = l.middle()
     assert m._val == 2
+
+    print("#" * 10 + " Loop detects " + "#" * 10)
+    looped1 = l.hasLoop()
+
+    n4._next = n2
+    n = None
+    n4 = None
+    n2 = None
+
+    looped2 = l.hasLoop()
+    assert(looped1 == False)
+    assert(looped2 == True)
