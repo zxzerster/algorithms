@@ -177,6 +177,38 @@ class SingleLinkedList(object):
 
         return True
 
+    def swap(self, node1, node2):
+        if node1 is None or node2 is None: return
+        if node1 == node2: return
+
+        def _prevNode(head, node):
+            p = head
+            while p._next is not None:
+                if p._next == node: return p
+                p = p._next
+
+        p1 = _prevNode(self._head, node1)
+        p2 = _prevNode(self._head, node2)
+        if node1._next != node2 and node2._next != node1:
+            p1._next = node1._next
+            p2._next = node2._next
+
+            node2._next = p1._next
+            p1._next = node2
+            node1._next = p2._next
+            p2._next = node1
+        else:
+            if node1._next == node2:
+                node1._next = node2._next
+                p1._next = node2
+                node2._next = node1
+                return
+            if node2._next == node1:
+                node2._next = node1._next
+                p2._next = node1
+                node1._next = node2
+                return
+
 if __name__ == "__main__":
     print("Testing SingleLinkedList")
 
@@ -271,5 +303,42 @@ if __name__ == "__main__":
     print("palindrome1: %r,  palindrome2: %r" % (palindrome1, palindrome2))
     assert(palindrome1)
     assert(palindrome2 is False)
+
+    print("#" * 10 + " Swap nodes " + "#" * 10)
+    pl1 = SingleLinkedList()
+
+    n = SingleLinkedList.Node(4)
+    pl1.insert(n)
+
+    n = SingleLinkedList.Node(3)
+    pl1.insert(n)
+    n3 = n
+
+    n = SingleLinkedList.Node(2)
+    pl1.insert(n)
+    n2 = n
+
+    n = SingleLinkedList.Node(1)
+    pl1.insert(n)
+    n1 = n
+
+    n = SingleLinkedList.Node(2)
+    pl1.insert(n)
+
+    n = SingleLinkedList.Node(3)
+    pl1.insert(n)
+
+    n = SingleLinkedList.Node(4)
+    pl1.insert(n)
+
+    # swap two continues nodes
+    pl1.swap(n3, n2)
+
+    # swap two same nodes
+    # pl1.swap(n3, n3)
+
+    # swap two seperate nodes
+    # pl1.swap(n3, n1)
+    print("Check swap nodes result on python Tutor!")
 
     print("End")
