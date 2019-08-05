@@ -209,6 +209,20 @@ class SingleLinkedList(object):
                 node1._next = node2
                 return
 
+    def pairwiseSwap(self):
+        def _swap(node1, node2):
+            node1._next = node2._next
+            node2._next = node1
+            return node2
+
+        def _reversePairwiseTraveral(node, cb):
+            # 3 nodes are needed, A -> B -> C  ==>  A -> C -> B
+            if node is None or node._next is None or node._next._next is None: return
+            _reversePairwiseTraveral(node._next._next, cb)
+            node._next = _swap(node._next, node._next._next)
+
+        _reversePairwiseTraveral(self._head, _swap)
+
 if __name__ == "__main__":
     print("Testing SingleLinkedList")
 
@@ -339,6 +353,10 @@ if __name__ == "__main__":
 
     # swap two seperate nodes
     # pl1.swap(n3, n1)
+    print("Check swap nodes result on python Tutor!")
+
+    print("#" * 10 + " Pairwise swap " + "#" * 10)
+    pl1.pairwiseSwap()
     print("Check swap nodes result on python Tutor!")
 
     print("End")
