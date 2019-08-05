@@ -222,6 +222,33 @@ class SingleLinkedList(object):
             node._next = _swap(node._next, node._next._next)
 
         _reversePairwiseTraveral(self._head, _swap)
+    def reverse(self):
+        def _iterative_reverse(head):
+            from collections import deque
+            s = deque()
+            n = head._next
+            while n is not None:
+                s.append(n)
+                n = n._next
+
+            while len(s) > 0:
+                n = s.popleft()
+                self.insert(n)
+
+        def _recursive_reverse(head):
+            def _reverseTraversal(node):
+                if node is None or node._next is None:
+                    # Actually node won't be None, and when node._next is None, we get the last node
+                    # which will be the first one that headNode._next will point to
+                    self._head._next = node
+                    return
+                _reverseTraversal(node._next)
+                node._next._next = node
+                node._next = None
+
+            _reverseTraversal(head._next)
+
+        _recursive_reverse(self._head)
 
 if __name__ == "__main__":
     print("Testing SingleLinkedList")
@@ -358,5 +385,8 @@ if __name__ == "__main__":
     print("#" * 10 + " Pairwise swap " + "#" * 10)
     pl1.pairwiseSwap()
     print("Check swap nodes result on python Tutor!")
+
+    print("#" * 10 + " Reverse list " + "#" * 10)
+    pl1.reverse()
 
     print("End")
