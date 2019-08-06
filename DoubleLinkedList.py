@@ -36,6 +36,51 @@ class DoubleLinkedList(object):
 
         return None
 
+    def reverse(self):
+        def _iterative_reverse(head):
+            if head is None: return
+
+            p = head._next
+            q = p._next
+            while p is not None:
+                # Reverse node (node is not first one or last one)
+                # Reverse first should also set its *new next* to be None which previously point to head node
+                # Reverse last one should also set it "new prev" to point to head which previouly point to None
+                p._next, p._prev = p._prev, p._next
+                # First one become last one
+                if p._next == head: p._next = None
+
+                if q is not None:
+                    p = q
+                    q = q._next
+                else:
+                    # Last one now is pointed by head
+                    p._prev = head
+                    head._next = p
+                    break
+
+        def _recursive_reverse(head):
+            def __reverse_traversal(node, cb):
+                if node is None:
+                    return
+                __reverse_traversal(node._next, cb)
+                cb(node)
+
+            def __swapDoubleLinkedNode(node):
+                # First node, update its prev to be None, because after reversing, this is the last node in list
+                if node._prev == head: node._prev = None
+                # Last node, update its next (will be prev after reversing) to point to head
+                if node._next == None:
+                    node._next = head
+                    head._next = node
+                # Reversing nodes in the middle is easy
+                node._prev, node._next = node._next, node._prev
+
+            __reverse_traversal(self._head, __swapDoubleLinkedNode)
+
+        # _iterative_reverse(self._head)
+        _recursive_reverse(self._head)
+
 if __name__ == "__main__":
     print("Test DoubleLinkedList")
 
@@ -61,19 +106,22 @@ if __name__ == "__main__":
     l.insert(n)
     n0 = n
 
-    l.delete(n0)
-    l.delete(n2)
-    l.delete(n3)
-    l.delete(n4)
+    # l.delete(n0)
+    # l.delete(n2)
+    # l.delete(n3)
+    # l.delete(n4)
 
-    n1 = l.search(1)
-    print(n1._val)
+    # n1 = l.search(1)
+    # print(n1._val)
 
-    n4 = l.search(4)
-    print(n4)
+    # n4 = l.search(4)
+    # print(n4)
 
-    l.delete(n2)
-    l.delete(n3)
+    # l.delete(n2)
+    # l.delete(n3)
+
+    print("#" * 10 + " Reverse list " + "#" * 10)
+    l.reverse()
 
     n = None
     print("End")
