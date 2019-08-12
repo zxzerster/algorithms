@@ -15,7 +15,7 @@ class BinarySearchTree:
             self._root = node
             return
 
-        BinarySearchTree._recursive_insert(self.root, node)
+        BinarySearchTree._recursive_insert(self._root, node)
 
     @staticmethod
     def _recursive_insert(root, node):
@@ -63,3 +63,15 @@ if __name__ == "__main__":
 
     n = BinarySearchTree.Node(3)
     t.insert(n)
+
+    n = BinarySearchTree.Node(15)
+    t.insert(n)
+
+    n = BinarySearchTree.Node(11)
+    t.insert(n)
+
+    n = BinarySearchTree.Node(19)
+    t.insert(n)
+
+    n = None
+    print("End") #break
