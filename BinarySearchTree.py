@@ -44,11 +44,13 @@ class BinarySearchTree:
         if node is None: return None
 
         #  case 1: node is max itself, there will be no successor for max node
+        # O(h) h -> height of tree
         r = self.max(self._root)
         if r == node: return None
 
         # case 2: node is not max node, and have right sub-tree, successor will be
         # min of right sub-tree
+        # O(h)
         if node._right is not None:
             return self.min(node._right)
 
@@ -58,6 +60,7 @@ class BinarySearchTree:
         # because we don't have parent pointer in each node, we have to search the nearest "left parent"
         # from top to bottom
         # left parent -> means node is the left child of parent
+        # O(h)
         n = self._root
         while n is not node:
             if node._val < n._val:
@@ -68,21 +71,25 @@ class BinarySearchTree:
 
         return lp
 
+    # O(h)
     def predecessor(self, node):
         if node is None: return None
 
         # case 1: if node is minimum node, there will be no predecessor
+        # O(h) h -> height of tree
         r = self.min(self._root)
         if r == node: return None
 
         # case 2: if node isn't minimum node, and has left sub-tree, predecessor will be
         # max of left sub-tree
+        # O(h)
         if node._left is not None:
             return self.max(node._left)
 
         # case 3: if node isn't minimum node, and doesn't have left sub-tree, predecessor will be
         # nearest right parent whoese first right sub-right left is node
         # right parent -> means node is the right child of parent
+        # O(h)
         n = self._root
         while n is not node:
             if node._val < n._val:
