@@ -17,6 +17,28 @@ class BinarySearchTree:
 
         BinarySearchTree._recursive_insert(self._root, node)
 
+    def min(self, node=None):
+        if node is None:
+            node = self._root
+
+        n = node
+        while n is not None:
+            p = n
+            n = n._left
+
+        return p
+
+    def max(self, node=None):
+        if node is None:
+            node = self._root
+
+        n = node
+        while n is not None:
+            p = n
+            n = n._right
+
+        return p
+
     @staticmethod
     def _recursive_insert(root, node):
         if node._val < root._val:
@@ -72,6 +94,16 @@ if __name__ == "__main__":
 
     n = BinarySearchTree.Node(19)
     t.insert(n)
+
+    print("#" * 10 + " Min / Max " + "#" * 10)
+    m1 = t.min()
+    m2 = t.max()
+
+    assert(m1._val == 3)
+    assert(m2._val == 19)
+
+    m1 = None
+    m2 = None
 
     n = None
     print("End") #break
