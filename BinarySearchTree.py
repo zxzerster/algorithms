@@ -60,7 +60,6 @@ class BinarySearchTree:
         # left parent -> means node is the left child of parent
         n = self._root
         while n is not node:
-            p = n
             if node._val < n._val:
                 lp = n
                 n = n._left
@@ -68,6 +67,31 @@ class BinarySearchTree:
                 n = n._right
 
         return lp
+
+    def predecessor(self, node):
+        if node is None: return None
+
+        # case 1: if node is minimum node, there will be no predecessor
+        r = self.min(self._root)
+        if r == node: return None
+
+        # case 2: if node isn't minimum node, and has left sub-tree, predecessor will be
+        # max of left sub-tree
+        if node._left is not None:
+            return self.max(node._left)
+
+        # case 3: if node isn't minimum node, and doesn't have left sub-tree, predecessor will be
+        # nearest right parent whoese first right sub-right left is node
+        # right parent -> means node is the right child of parent
+        n = self._root
+        while n is not node:
+            if node._val < n._val:
+                n = n._left
+            else:
+                rp = n
+                n = n._right
+
+        return rp
 
     @staticmethod
     def _recursive_insert(root, node):
@@ -153,18 +177,23 @@ if __name__ == "__main__":
     m1 = None
     m2 = None
 
-    print("#" * 10 + " Successor " + "#" * 10)
+    print("#" * 10 + " Successor / Predecessor " + "#" * 10)
     # case 1: max node donesn't have a successor
     s = t.successor(n23)
+    p = t.predecessor(n3)
     assert(s is None)
-
+    assert(p is None)
     # case 2: node has right sub-tree
     s = t.successor(n15)
+    p = t.predecessor(n8)
     assert(s._val == 17)
+    assert(p._val == 4)
 
     # case 3: node only has left sub-tree
     s = t.successor(n4)
+    p = t.predecessor(n11)
     assert(s._val == 8)
+    assert(p._val == 8)
 
     del m1
     del m2
