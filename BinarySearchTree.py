@@ -16,6 +16,83 @@ class BinarySearchTree:
             return
 
         BinarySearchTree._recursive_insert(self._root, node)
+    
+    def delete(self, node):
+        if node is None: return
+
+        # case 1: node doesn't have any children
+        if node._left is None and node._right is None:
+            p = self._parent(node)
+            if p is None:
+                # node is the rrot
+                self._root = None
+            else:
+                if p._left == node: p._left = None
+                else: p._right = None 
+                del node
+            return
+        
+        # case 2: node has only 1 child, no matter left or right
+        if node._left is None:
+            # node has only right child
+            p = self._parent(node)
+            if p is None:
+                n = self._root
+                self._root = node._right
+                del n
+                return
+            if p._left == node:
+                p._left = node._right
+            else:
+                p._right = node._right
+            del node
+            return
+            
+        if node._right is None:
+            # node has only left child
+            p = self._parent(node)
+            if p is None:
+                n = self._root
+                self._root = node._left
+                del n
+                return
+            if p._left == node:
+                p._left = node._left
+            else:
+                p._right = node._left
+            return
+
+        # case 3: node has both left / right child
+        
+        # step 1: find successor of node, we use this successor to replace the deleted one
+        s = self.successor(node)
+        parent = self._parent(node)
+
+        # step 2: because s will replace node, its right sub tree will become parent's left sub tree
+        # also notice that this successor will have no left sub tree, or it won't be a successor, think about this
+
+        # put s' right child to its parent's left first
+        self._parent(s)._left = s._right
+
+        # replace node with its successor
+        s._right = node._right
+        s._left = node._left
+
+        # node's parent is None means node is root of this tree
+        if parent == None:
+            parent = self._root
+            self._root = s
+            del node
+            return
+
+        # if node isn't root, then, we need figure out like we did before, attach it to parent (left or right)
+        if parent._left == node:
+            parent._left = s
+        else:
+            parent._right = s
+
+        del node
+        return
 
     def root(self):
         return self._root
@@ -99,6 +176,22 @@ class BinarySearchTree:
                 n = n._right
 
         return rp
+
+    def _parent(self, node):
+        if node is None: return None
+
+        n = self._root
+        p = None
+        while n is not node:
+            if n == node: break
+
+            p = n
+            if node._val < n._val:
+                n = n._left
+            else:
+                n = n._right
+
+        return p
 
     @staticmethod
     def _recursive_insert(root, node):
@@ -201,6 +294,8 @@ if __name__ == "__main__":
     p = t.predecessor(n11)
     assert(s._val == 8)
     assert(p._val == 8)
+
+    print("#" * 10 + " Delete (standalone) " + "#" * 10)
 
     del m1
     del m2
