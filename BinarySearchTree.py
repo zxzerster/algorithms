@@ -177,6 +177,27 @@ class BinarySearchTree:
 
         return rp
 
+    def breadthFirstTraversal(self, cb=None):
+        from collections import deque
+
+        if self._root is None: return
+
+        q = deque()
+        q.appendleft(self._root)
+
+        while len(q) > 0:
+            n = q.pop()
+            if n._left is not None:
+                q.appendleft(n._left)
+            if n._right is not None:
+                q.appendleft(n._right)
+
+            if cb is not None:
+                cb(n)
+
+    def depthFirstTraversal(self, cb=None):
+        BinarySearchTree._depthFirstTraversal(self._root, cb)
+
     def _parent(self, node):
         if node is None: return None
 
@@ -192,6 +213,19 @@ class BinarySearchTree:
                 n = n._right
 
         return p
+
+    @staticmethod
+    def _depthFirstTraversal(node, cb=None):
+        if node is None: return
+
+        if node._left is not None:
+            BinarySearchTree._depthFirstTraversal(node._left, cb)
+
+        if node._right is not None:
+            BinarySearchTree._depthFirstTraversal(node._right, cb)
+
+        if cb is not None:
+            cb(node)
 
     @staticmethod
     def _recursive_insert(root, node):
@@ -296,6 +330,9 @@ if __name__ == "__main__":
     assert(p._val == 8)
 
     print("#" * 10 + " Delete (standalone) " + "#" * 10)
+
+    print("#" * 10 + " Traversal (breadthfirst / depthfirst) " + "#" * 10)
+    t.breadthFirstTraversal()
 
     del m1
     del m2
