@@ -1,49 +1,39 @@
-class TrieNode:
-  def __init__(self, key):
-    self.nodes = []
-    self.key = key
-    self.isEnd = True
-  
-  def markEnd(self, end):
-    self.isEnd = end
-
 class Trie:
-  def __init__(self):
-    self.root = TrieNode(None)
+  # Trie Node
+  class Node:
+    def __init__(self):
+      self.nodes = [None for x in range(0, 26)]
+      self.isEnd = False
+    
+    def char(self):
+      for i in range(0, 26):
+        if self.nodes[i] is not None:
+          return chr(i + ord('a'))
+    
+      return None
 
-  def addPattern(self, pattern):
+  def __init__(self):
+    self.root = Trie.Node()
+  
+  def _addPattern(self, pattern):
+    if pattern is None or len(pattern) < 1: return
+
     current = self.root
     for c in pattern:
-      if current.nodes is None:
-        current.nodes = [TrieNode(key=c)]
-        current = current.nodes[0]
-      else:
-        found = False
-        p = None
-        for n in current.nodes:
-          if n.key == c:
-            found = True
-            p = n
-            break
-        
-        if not found:
-          n = TrieNode(key=c)
-          current.nodes.append(n)
-          current = n
-        else:
-          current = p
-  
-  def makeFrom(self, patterns):
-    for pattern in patterns:
-      self.addPattern(pattern)
+      index = ord(c) - ord('a')
+      if not current.nodes[index]:
+        current.nodes[index] = Trie.Node()
+      current = current.nodes[index]
 
+    current.isEnd = True
+
+  def makeFrom(self, patterns):
+    if patterns is None or len(patterns) < 1: return
+    for p in patterns:
+      self._addPattern(p)
 
 if __name__ == '__main__':
   print('Trie')
 
   trie = Trie()
-  trie.makeFrom('their')
-  trie.makeFrom('there')
-  trie.makeFrom('answer')
-  trie.makeFrom('any')
-  trie.makeFrom('bye')
+  trie.makeFrom(["hello", "Hi"])
