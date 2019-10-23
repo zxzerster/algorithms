@@ -31,9 +31,28 @@ class Trie:
     if patterns is None or len(patterns) < 1: return
     for p in patterns:
       self._addPattern(p)
+  
+  def searchIn(self, string):
+    results = []
+    for start in range(0, len(string)):
+      i = start
+      c = string[i]
+      current = self.root
+      while current.nodes[ord(c) - ord('a')] is not None:
+        current = current.nodes[ord(c) - ord('a')]
+        i += 1
+        c = string[i]
+      
+      # Find it if current node is the end of the pattern
+      if current.isEnd:
+        results.append(start)
+    
+    return results
 
 if __name__ == '__main__':
   print('Trie')
 
   trie = Trie()
-  trie.makeFrom(["hello", "Hi"])
+  trie.makeFrom(["hello", "hi"])
+
+  results = trie.searchIn("abxythellozlkhgghixlsg")
